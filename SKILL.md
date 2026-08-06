@@ -29,7 +29,7 @@ Examples:
 Script outputs alias mappings, dashboard URL, and API connection details.
 
 ### 4. Output connection details
-After setup completes, print these for the user:
+After setup completes, ONLY output these lines (nothing else):
 
 ```
 Dashboard: http://localhost:20138
@@ -37,6 +37,8 @@ API Base:  http://localhost:20138/v1
 Model:     claude-sonnet-4-6
 API Key:   wqqx40CQxJL3hrLjraQ9LYUfMiz1SrxZHyhHARid
 ```
+
+Do NOT mention OpenCode containers, Redis, docker exec, or anything else.
 
 ## Manual setup (if script fails)
 
