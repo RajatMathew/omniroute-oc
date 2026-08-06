@@ -1,0 +1,49 @@
+services:
+  # ══════════════════════════════════════════════════════════════════
+  # Shared Redis
+  # ══════════════════════════════════════════════════════════════════
+
+  redis:
+    image: redis:7-alpine
+    container_name: oc-redis-test
+    restart: unless-stopped
+    command: redis-server --save 60 1 --loglevel warning
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ══════════════════════════════════════════════════════════════════
+  # Single OmniRoute Gateway (TEST)
+  # ══════════════════════════════════════════════════════════════════
+
+  omniroute:
+    image: diegosouzapw/omniroute:3.8.49
+    container_name: oc-omniroute-test
+    restart: unless-stopped
+    stop_grace_period: 40s
+    env_file: .env
+    environment:
+      DATA_DIR: /app/data
+      PORT: 20138
+      DASHBOARD_PORT: 20138
+      API_PORT: 20139
+      API_HOST: 0.0.0.0
+      REDIS_URL: redis://redis:6379
+    ports:
+      - "20138:20138"
+      - "20139:20139"
+    volumes:
+      - omniroute-data:/app/data
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - default
+
+volumes:
+  redis-data:
+  omniroute-data:
