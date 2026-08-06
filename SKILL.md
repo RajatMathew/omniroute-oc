@@ -28,13 +28,14 @@ Examples:
 ### 3. Verify
 Script outputs alias mappings, dashboard URL, and API connection details.
 
-## Connection Details
-After setup, use these to connect:
+### 4. Output connection details
+After setup completes, print these for the user:
 
 ```
-Base URL: http://localhost:20138/v1
-API Key:  wqqx40CQxJL3hrLjraQ9LYUfMiz1SrxZHyhHARid
-Model:    claude-sonnet-4-6
+Dashboard: http://localhost:20138
+API Base:  http://localhost:20138/v1
+Model:     claude-sonnet-4-6
+API Key:   wqqx40CQxJL3hrLjraQ9LYUfMiz1SrxZHyhHARid
 ```
 
 ## Manual setup (if script fails)
