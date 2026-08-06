@@ -110,7 +110,7 @@ docker compose down
 Wait 5-10 seconds after `docker compose up`. Check: `docker ps`
 
 ### "Login failed"
-Verify password matches `.env` file. Check: `docker logs oc-omniroute`
+Verify password matches `.env` file. Check: `docker logs omniroute-oc`
 
 ### Aliases not working
 Re-run setup script.
