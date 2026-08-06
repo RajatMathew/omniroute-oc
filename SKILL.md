@@ -28,6 +28,15 @@ Examples:
 ### 3. Verify
 Script outputs alias mappings, dashboard URL, and API connection details.
 
+## Connection Details
+After setup, use these to connect:
+
+```
+Base URL: http://localhost:20138/v1
+API Key:  wqqx40CQxJL3hrLjraQ9LYUfMiz1SrxZHyhHARid
+Model:    claude-sonnet-4-6
+```
+
 ## Manual setup (if script fails)
 
 ### 1. Get auth token
@@ -70,8 +79,8 @@ curl -s http://localhost:20128/api/models/alias \
 ## Claude Code connection
 
 ```
-ANTHROPIC_BASE_URL=http://localhost:20128
-ANTHROPIC_API_KEY=test
+ANTHROPIC_BASE_URL=http://localhost:20138/v1
+ANTHROPIC_API_KEY=wqqx40CQxJL3hrLjraQ9LYUfMiz1SrxZHyhHARid
 ```
 
 Or:

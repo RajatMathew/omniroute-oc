@@ -5,7 +5,7 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: oc-redis-test
+    container_name: omniroute-redis
     restart: unless-stopped
     command: redis-server --save 60 1 --loglevel warning
     volumes:
@@ -22,7 +22,7 @@ services:
 
   omniroute:
     image: diegosouzapw/omniroute:3.8.49
-    container_name: oc-omniroute-test
+    container_name: omniroute-oc
     restart: unless-stopped
     stop_grace_period: 40s
     env_file: .env

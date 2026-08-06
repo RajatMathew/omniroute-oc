@@ -3,6 +3,7 @@ set -e
 
 BASE_URL="${1:-http://localhost:20138}"
 PASSWORD="${2:-TestPassword123!}"
+API_KEY="${3:-wqqx40CQxJL3hrLjraQ9LYUfMiz1SrxZHyhHARid}"
 
 echo "=== OmniRoute Setup ==="
 echo "Target: $BASE_URL"
@@ -56,4 +57,4 @@ echo "=== Connection Details ==="
 echo "Dashboard: $BASE_URL"
 echo "API Base:  $BASE_URL/v1"
 echo "Model:     claude-sonnet-4-6"
-echo "API Key:   (any string)"
+echo "API Key:   $API_KEY"
