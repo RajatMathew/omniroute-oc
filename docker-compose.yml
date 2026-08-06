@@ -1,24 +1,18 @@
 services:
-  # ══════════════════════════════════════════════════════════════════
-  # Shared Redis
-  # ══════════════════════════════════════════════════════════════════
-
   redis:
     image: redis:7-alpine
     container_name: omniroute-redis
     restart: unless-stopped
     command: redis-server --save 60 1 --loglevel warning
     volumes:
-      - redis-data:/data
+      - omniroute-redis-data:/data
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
-
-  # ══════════════════════════════════════════════════════════════════
-  # Single OmniRoute Gateway (TEST)
-  # ══════════════════════════════════════════════════════════════════
+    networks:
+      - default
 
   omniroute:
     image: diegosouzapw/omniroute:3.8.49
@@ -28,14 +22,14 @@ services:
     env_file: .env
     environment:
       DATA_DIR: /app/data
-      PORT: 20138
-      DASHBOARD_PORT: 20138
-      API_PORT: 20139
+      PORT: ${PORT:-20138}
+      DASHBOARD_PORT: ${PORT:-20138}
+      API_PORT: ${API_PORT:-20139}
       API_HOST: 0.0.0.0
-      REDIS_URL: redis://redis:6379
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379}
     ports:
-      - "20138:20138"
-      - "20139:20139"
+      - "${PORT:-20138}:${PORT:-20138}"
+      - "${API_PORT:-20139}:${API_PORT:-20139}"
     volumes:
       - omniroute-data:/app/data
     depends_on:
@@ -45,5 +39,7 @@ services:
       - default
 
 volumes:
-  redis-data:
+  omniroute-redis-data:
+    name: omniroute-redis-data
   omniroute-data:
+    name: omniroute-data
