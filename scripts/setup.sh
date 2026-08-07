@@ -42,8 +42,8 @@ create_alias() {
 }
 
 echo "Creating aliases..."
-create_alias "claude-sonnet-4-6" "oc/deepseek-v4-flash-free"
 create_alias "claude-sonnet-5" "oc/deepseek-v4-flash-free"
+create_alias "claude-opus-5" "oc/deepseek-v4-flash-free"
 create_alias "claude-opus-4-8" "oc/deepseek-v4-flash-free"
 
 # Verify

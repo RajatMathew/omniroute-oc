@@ -34,7 +34,7 @@ After setup completes, ONLY output these lines (nothing else):
 ```
 Dashboard: http://localhost:20138
 API Base:  http://localhost:20138/v1
-Model:     claude-sonnet-4-6
+Model:     claude-sonnet-5
 API Key:   wqqx40CQxJL3hrLjraQ9LYUfMiz1SrxZHyhHARid
 ```
 
@@ -88,14 +88,14 @@ ANTHROPIC_API_KEY=wqqx40CQxJL3hrLjraQ9LYUfMiz1SrxZHyhHARid
 
 Or:
 ```
-claude --model claude-sonnet-4-6
+claude --model claude-sonnet-5
 ```
 
 ## Default aliases
 | Alias | Target | Context |
 |-------|--------|---------|
-| claude-sonnet-4-6 | oc/deepseek-v4-flash-free | 1M |
 | claude-sonnet-5 | oc/deepseek-v4-flash-free | 1M |
+| claude-opus-5 | oc/deepseek-v4-flash-free | 1M |
 | claude-opus-4-8 | oc/deepseek-v4-flash-free | 1M |
 
 ## Ports
