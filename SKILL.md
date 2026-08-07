@@ -107,6 +107,19 @@ claude --model claude-sonnet-5
 docker compose down
 ```
 
+## Updating aliases
+
+After deployment, edit `aliases.json` and run:
+
+```bash
+./scripts/update-aliases.sh
+```
+
+Flags (optional):
+```bash
+./scripts/update-aliases.sh --base-url http://localhost:20128 --password MyPassword
+```
+
 ## Troubleshooting
 
 ### "Connection refused"

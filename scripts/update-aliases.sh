@@ -1,21 +1,23 @@
 #!/bin/bash
 set -e
 
-BASE_URL="${1:-http://localhost:20138}"
-PASSWORD="${2:-TestPassword123!}"
-API_KEY="${3:-wqqx40CQxJL3hrLjraQ9LYUfMiz1SrxZHyhHARid}"
-ALIASES_FILE="${4:-$(dirname "$0")/../aliases.json}"
+# Defaults
+BASE_URL="http://localhost:20138"
+PASSWORD="TestPassword123!"
+ALIASES_FILE="$(dirname "$0")/../aliases.json"
 
-echo "=== OmniRoute Setup ==="
-echo "Target: $BASE_URL"
-
-# Wait for OmniRoute to be ready
-echo -n "Waiting for OmniRoute..."
-until curl -s "$BASE_URL/" > /dev/null 2>&1; do
-  sleep 1
-  echo -n "."
+# Parse flags
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    --base-url) BASE_URL="$2"; shift 2 ;;
+    --password) PASSWORD="$2"; shift 2 ;;
+    --aliases) ALIASES_FILE="$2"; shift 2 ;;
+    *) echo "Unknown flag: $1"; exit 1 ;;
+  esac
 done
-echo " ready"
+
+echo "=== Update Aliases ==="
+echo "Target: $BASE_URL"
 
 # Login and get auth token
 AUTH_TOKEN=$(curl -s "$BASE_URL/api/auth/login" \
@@ -30,8 +32,8 @@ if [ -z "$AUTH_TOKEN" ]; then
 fi
 echo "Logged in"
 
-# Create model aliases from JSON file
-create_alias() {
+# Update aliases from JSON file
+update_alias() {
   local ALIAS=$1
   local TARGET=$2
   curl -s "$BASE_URL/api/models/alias" \
@@ -42,12 +44,12 @@ create_alias() {
   echo "  $ALIAS -> $TARGET"
 }
 
-echo "Creating aliases..."
+echo "Updating aliases..."
 if [ -f "$ALIASES_FILE" ]; then
   while IFS='=' read -r alias target; do
     [ -z "$alias" ] && continue
     [[ "$alias" =~ ^# ]] && continue
-    create_alias "$alias" "$target"
+    update_alias "$alias" "$target"
   done < <(python3 -c "import json; [print(f'{k}={v}') for k,v in json.load(open('$ALIASES_FILE')).items()]")
 else
   echo "ERROR: aliases.json not found at $ALIASES_FILE"
@@ -56,13 +58,6 @@ fi
 
 # Verify
 echo ""
-echo "=== Verification ==="
+echo "=== Current Aliases ==="
 curl -s "$BASE_URL/api/models/alias" \
   -H "Cookie: auth_token=$AUTH_TOKEN" | python3 -m json.tool
-
-echo ""
-echo "=== Connection Details ==="
-echo "Dashboard: $BASE_URL"
-echo "API Base:  $BASE_URL/v1"
-echo "Model:     claude-sonnet-5"
-echo "API Key:   $API_KEY"
