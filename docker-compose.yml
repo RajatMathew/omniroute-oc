@@ -1,7 +1,7 @@
 services:
   redis:
     image: redis:7-alpine
-    container_name: omniroute-redis
+    container_name: omniroute-redis-${COMPOSE_PROJECT_NAME:-default}
     restart: unless-stopped
     command: redis-server --save 60 1 --loglevel warning
     volumes:
@@ -16,7 +16,7 @@ services:
 
   omniroute:
     image: diegosouzapw/omniroute:3.8.49
-    container_name: omniroute-oc
+    container_name: omniroute-oc-${COMPOSE_PROJECT_NAME:-default}
     restart: unless-stopped
     stop_grace_period: 40s
     env_file: .env
@@ -40,6 +40,6 @@ services:
 
 volumes:
   omniroute-redis-data:
-    name: omniroute-redis-data
+    name: omniroute-redis-data-${COMPOSE_PROJECT_NAME:-default}
   omniroute-data:
-    name: omniroute-data
+    name: omniroute-data-${COMPOSE_PROJECT_NAME:-default}
