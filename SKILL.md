@@ -8,6 +8,14 @@ Use this skill when deploying or configuring OmniRoute for the first time.
 
 ## Quick start
 
+### 0. Choose profile
+Ask user: **full** (with dashboard) or **base** (API-only, lighter)?
+
+- **Full**: Remove `COMPOSE_PROFILES=base` from `.env` or set `COMPOSE_PROFILES=` empty
+- **Base**: Keep `COMPOSE_PROFILES=base` (default)
+
+Base has NO web UI — only accessible via API at `/v1`.
+
 ### 1. Start containers
 ```bash
 docker compose up -d
