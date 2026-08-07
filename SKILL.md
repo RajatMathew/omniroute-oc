@@ -52,9 +52,9 @@ Do NOT mention OpenCode containers, Redis, docker exec, or anything else.
 
 This stack uses `COMPOSE_PROFILES=base` for a lighter image.
 
-**Base profile has NO web UI/dashboard.** API-only.
+Base profile = lighter image with fewer features. Dashboard may still be accessible.
 
-To get the dashboard, remove `COMPOSE_PROFILES=base` from `.env` or Dokploy env.
+To disable dashboard, set `REQUIRE_API_KEY=true` and don't expose port 20138.
 
 ## Dokploy deployment
 
