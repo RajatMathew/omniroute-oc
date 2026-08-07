@@ -40,34 +40,58 @@ API Key:   wqqx40CQxJL3hrLjraQ9LYUfMiz1SrxZHyhHARid
 
 Do NOT mention OpenCode containers, Redis, docker exec, or anything else.
 
+## Base compose profile
+
+This stack uses `COMPOSE_PROFILES=base` for a lighter image.
+
+**Base profile has NO web UI/dashboard.** API-only.
+
+To get the dashboard, remove `COMPOSE_PROFILES=base` from `.env` or Dokploy env.
+
+## Dokploy deployment
+
+### Environment variables
+```
+COMPOSE_PROFILES=base
+INITIAL_PASSWORD=<strong-password>
+AUTH_COOKIE_SECURE=true
+REQUIRE_API_KEY=true
+NODE_ENV=production
+```
+
+### After deploy — set aliases
+Run in Dokploy Docker terminal or SSH:
+```bash
+curl -s http://localhost:20138/api/auth/login -X POST -H "Content-Type: application/json" -d '{"password":"YOUR_PASSWORD"}' -c /tmp/oc.txt && curl -s http://localhost:20138/api/models/alias -b /tmp/oc.txt -H "Content-Type: application/json" -X PUT -d '{"model":"oc/deepseek-v4-flash-free","alias":"claude-sonnet-5"}' && curl -s http://localhost:20138/api/models/alias -b /tmp/oc.txt -H "Content-Type: application/json" -X PUT -d '{"model":"oc/deepseek-v4-flash-free","alias":"claude-opus-5"}' && curl -s http://localhost:20138/api/models/alias -b /tmp/oc.txt -H "Content-Type: application/json" -X PUT -d '{"model":"oc/deepseek-v4-flash-free","alias":"claude-opus-4-8"}' && curl -s http://localhost:20138/api/models/alias -b /tmp/oc.txt
+```
+
 ## Manual setup (if script fails)
 
-### 1. Get auth token
+### 1. Login
 ```bash
-curl -s http://localhost:20128/api/auth/login \
+curl -s http://localhost:20138/api/auth/login \
   -X POST \
   -H "Content-Type: application/json" \
   -d '{"password":"YOUR_PASSWORD"}' \
-  -c - | grep auth_token | awk '{print $NF}'
+  -c /tmp/oc.txt
 ```
 
 ### 2. Create aliases
 ```bash
-# Replace $TOKEN with the auth token from step 1
-curl -s http://localhost:20128/api/models/alias \
-  -H "Cookie: auth_token=$TOKEN" \
-  -H "Content-Type: application/json" \
-  -X PUT \
-  -d '{"model":"oc/deepseek-v4-flash-free","alias":"claude-sonnet-4-6"}'
-
-curl -s http://localhost:20128/api/models/alias \
-  -H "Cookie: auth_token=$TOKEN" \
+curl -s http://localhost:20138/api/models/alias \
+  -b /tmp/oc.txt \
   -H "Content-Type: application/json" \
   -X PUT \
   -d '{"model":"oc/deepseek-v4-flash-free","alias":"claude-sonnet-5"}'
 
-curl -s http://localhost:20128/api/models/alias \
-  -H "Cookie: auth_token=$TOKEN" \
+curl -s http://localhost:20138/api/models/alias \
+  -b /tmp/oc.txt \
+  -H "Content-Type: application/json" \
+  -X PUT \
+  -d '{"model":"oc/deepseek-v4-flash-free","alias":"claude-opus-5"}'
+
+curl -s http://localhost:20138/api/models/alias \
+  -b /tmp/oc.txt \
   -H "Content-Type: application/json" \
   -X PUT \
   -d '{"model":"oc/deepseek-v4-flash-free","alias":"claude-opus-4-8"}'
@@ -75,8 +99,7 @@ curl -s http://localhost:20128/api/models/alias \
 
 ### 3. Verify aliases
 ```bash
-curl -s http://localhost:20128/api/models/alias \
-  -H "Cookie: auth_token=$TOKEN"
+curl -s http://localhost:20138/api/models/alias -b /tmp/oc.txt
 ```
 
 ## Claude Code connection
@@ -122,6 +145,11 @@ Flags (optional):
 
 ## Troubleshooting
 
+### "Bad Gateway"
+- Base profile has no UI — this is expected
+- API still works at `/v1`
+- To get dashboard, remove `COMPOSE_PROFILES=base`
+
 ### "Connection refused"
 Wait 5-10 seconds after `docker compose up`. Check: `docker ps`
 
@@ -129,4 +157,4 @@ Wait 5-10 seconds after `docker compose up`. Check: `docker ps`
 Verify password matches `.env` file. Check: `docker logs omniroute-oc`
 
 ### Aliases not working
-Re-run setup script.
+Re-run setup script or use curl commands above.
