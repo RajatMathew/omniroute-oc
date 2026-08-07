@@ -1,4 +1,6 @@
 #!/bin/bash
+# Usage: ./scripts/update-aliases.sh
+# Flags: --base-url <url> --password <pass> --aliases <file>
 set -e
 
 # Defaults
